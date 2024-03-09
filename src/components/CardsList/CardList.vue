@@ -1,17 +1,16 @@
 <template>
-  <!--<div class="homepage">-->
-  <h1>Scroll Infinito com Cards</h1>
+  <h1 class="title">Catálogo de skins CSGO</h1>
   <div class="card-list">
-    <PostCard v-for="card in postCards" :key="card.id" :image="card.image" :title="card.title"
-      :description="card.description" />
+    <PostCard v-for="skin in skins" :key="skin.id" :image="skin.image" :title="skin.name"
+      :description="skin.description" />
   </div>
-  <button v-if="showLoadMoreButton" @click="loadMore" class="load-more-button">Carregar mais</button>
-  <!--</div>-->
+  <button v-if="showLoadMoreButton" @click="loadMore" class="load-more-button">CARREGAR MAIS...</button>
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import PostCard from "../PostCard/PostCard.vue";
+import CsGoAPI from "../../services/api.js";
 
 export default {
 
@@ -22,174 +21,56 @@ export default {
     return {
       cards: [],
       pageSize: 20,
-      currentPage: 1
+      currentPage: 1,
     };
   },
   setup() {
-    const postCards = ref([]);
+    //const postCards = ref([]);
     const pageSize = ref(20);
     const currentPage = ref(1);
 
+    const skins = ref([])
+    let data = [];
 
-    const mockData = [
-      {
-        id: 1,
-        image: 'https://cli.vuejs.org/favicon.png',
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-      },
-      {
-        id: 2,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 3,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 4,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 5,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 6,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 7,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 8,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 9,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 10,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 11,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 12,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 13,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 14,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 15,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 16,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 17,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 18,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 19,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 20,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-      {
-        id: 21,
-        title: "Um bom titulo",
-        description: "Descrição incrivel sobre como eu amo fazer códigos para ganhar a vida",
-        image: 'https://cli.vuejs.org/favicon.png'
-      },
-    ];
-
-    const loadInitialData = () => {
-      postCards.value = mockData.slice(0, pageSize.value);
-    };
-    loadInitialData();
-
+    const fetchSkins = async () => {
+      CsGoAPI.get()
+        .then((response) => {
+          data = response.data.slice(0, 200)
+          skins.value = data.slice(0, pageSize.value);
+        })
+        .catch(error => console.log(error))
+    }
+    onMounted(fetchSkins);
 
     const loadMore = () => {
       const startIndex = currentPage.value * pageSize.value;
       const endIndex = startIndex + pageSize.value;
-      postCards.value = [...postCards.value, ...mockData.slice(startIndex, endIndex)];
+      skins.value = [...skins.value, ...data.slice(startIndex, endIndex)];
       currentPage.value++;
     };
 
 
     const showLoadMoreButton = computed(() => {
-      return postCards.value.length < mockData.length;
+      return skins.value.length < data.length;
     });
 
     return {
-      postCards,
+      skins,
       showLoadMoreButton,
       loadMore
     };
-  }
+  },
 };
 </script>
 
 <style scoped>
+.title {
+  color: white;
+}
+
 .card-list {
   display: grid;
+  justify-content: center;
   grid-template-columns: repeat(auto-fill, minmax(300px, 350px));
   grid-gap: 30px;
 }
