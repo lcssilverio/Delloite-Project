@@ -20,10 +20,16 @@ export default {
 
 <style scoped>
 .card {
-  border: 1px solid darkcyan;
+  border: 2px solid darkgray;
   border-radius: 10px;
   overflow: hidden;
-  background-color: #fff;
+  background-color: lightgrey;
+}
+
+.card:hover {
+  transform: scale(1.04) perspective(0px);
+  box-shadow: 6px 6px 6px rgba(60, 60, 93, 0.33);
+  border: 2px solid white;
 }
 
 .card-image {

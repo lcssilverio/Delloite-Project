@@ -10,7 +10,7 @@ export default {
   name: 'App',
   components: {
     CardList,
-  }
+  },
 }
 </script>
 
@@ -27,6 +27,6 @@ export default {
   max-width: 100%;
   margin: 0;
   padding: 40px;
-  background-color: azure;
+  background-color: white;
 }
 </style>
