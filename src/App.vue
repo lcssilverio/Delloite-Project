@@ -1,18 +1,11 @@
 <template>
-  <div class="homepage">
-    <CardList />
-  </div>
+  <nav>
+    <router-link to="/">Homepage</router-link> |
+    <router-link to="/about">Sobre o jogo</router-link> |
+    <router-link to="/creator">Sobre o criador</router-link>
+  </nav>
+  <router-view />
 </template>
-
-<script>
-import CardList from './components/CardsList/CardList.vue'
-export default {
-  name: 'App',
-  components: {
-    CardList,
-  },
-}
-</script>
 
 <style>
 #app {
@@ -20,13 +13,25 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  margin: 0;
+  color: #2c3e50;
 }
 
-.homepage {
-  max-width: 100%;
-  margin: 0;
-  padding: 40px;
-  background-color: white;
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+  text-decoration: none
+}
+
+nav a.router-link-exact-active {
+  color: black;
+  background-color: #fbbc04;
+  border: 1px solid darkgrey;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 </style>

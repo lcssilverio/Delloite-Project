@@ -25,11 +25,10 @@ export default {
     };
   },
   setup() {
-    //const postCards = ref([]);
+    const skins = ref([])
     const pageSize = ref(20);
     const currentPage = ref(1);
 
-    const skins = ref([])
     let data = [];
 
     const fetchSkins = async () => {
@@ -64,10 +63,6 @@ export default {
 </script>
 
 <style scoped>
-.title {
-  color: white;
-}
-
 .card-list {
   display: grid;
   justify-content: center;
@@ -76,13 +71,22 @@ export default {
 }
 
 .load-more-button {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  background-color: #007bff;
+  background-image: linear-gradient(to right, #F09819 0%, #EDDE5D 51%, #F09819 100%);
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: black;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  border: 1px solid lightgrey;
+}
+
+.load-more-button:hover {
+  background-position: right center;
   color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  text-decoration: none;
 }
 </style>
