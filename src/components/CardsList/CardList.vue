@@ -1,14 +1,13 @@
 <template>
   <h1 class="title">Catálogo de skins CSGO</h1>
   <div class="card-list">
-    <PostCard v-for="skin in skins" :key="skin.id" :image="skin.image" :title="skin.name"
+    <PostCard v-for="skin in skins" :key="skin.id" :image="skin.image_link" :title="skin.name"
       :description="skin.description" />
   </div>
-  <button v-if="showLoadMoreButton" @click="loadMore" class="load-more-button">CARREGAR MAIS...</button>
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import PostCard from "../PostCard/PostCard.vue";
 import CsGoAPI from "../../services/api.js";
 
@@ -16,13 +15,6 @@ export default {
 
   components: {
     PostCard
-  },
-  data() {
-    return {
-      cards: [],
-      pageSize: 20,
-      currentPage: 1,
-    };
   },
   setup() {
     const skins = ref([])
@@ -34,6 +26,7 @@ export default {
     const fetchSkins = async () => {
       CsGoAPI.get()
         .then((response) => {
+          console.log(response.data.results)
           data = response.data.slice(0, 200)
           skins.value = data.slice(0, pageSize.value);
         })
@@ -48,14 +41,16 @@ export default {
       currentPage.value++;
     };
 
+    window.onscroll = () => {
+      let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
 
-    const showLoadMoreButton = computed(() => {
-      return skins.value.length < data.length;
-    });
+      if (bottomOfWindow) {
+        loadMore();
+      }
+    };
 
     return {
       skins,
-      showLoadMoreButton,
       loadMore
     };
   },
