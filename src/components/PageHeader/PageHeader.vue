@@ -23,7 +23,7 @@ export default {
 .page-header {
   background-color: #333;
   color: #fff;
-  padding: 20px;
+  padding: 5px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -50,10 +50,10 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: black;
+  color: #000;
   box-shadow: 0 0 5px #eee;
   background-image: linear-gradient(to right, #F09819 0%, #EDDE5D 50%, #F09819 100%);
-  border: 1px solid darkgrey;
+  border: 1px solid #a9a9a9;
   padding: 10px;
   border-radius: 8px;
   cursor: pointer;
