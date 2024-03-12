@@ -1,7 +1,6 @@
 <template>
-  <h1 class="title">Catálogo de skins CSGO</h1>
   <div class="card-list">
-    <PostCard v-for="skin in skins" :key="skin.id" :image="skin.image_link" :title="skin.name"
+    <PostCard v-for="skin in skins" :key="skin.id" :image="skin.image" :title="skin.name"
       :description="skin.description" />
   </div>
 </template>
@@ -26,7 +25,6 @@ export default {
     const fetchSkins = async () => {
       CsGoAPI.get()
         .then((response) => {
-          console.log(response.data.results)
           data = response.data.slice(0, 200)
           skins.value = data.slice(0, pageSize.value);
         })
@@ -63,25 +61,5 @@ export default {
   justify-content: center;
   grid-template-columns: repeat(auto-fill, minmax(300px, 350px));
   grid-gap: 30px;
-}
-
-.load-more-button {
-  background-image: linear-gradient(to right, #F09819 0%, #EDDE5D 51%, #F09819 100%);
-  margin: 10px;
-  padding: 15px 45px;
-  text-align: center;
-  text-transform: uppercase;
-  transition: 0.5s;
-  background-size: 200% auto;
-  color: black;
-  box-shadow: 0 0 20px #eee;
-  border-radius: 10px;
-  border: 1px solid lightgrey;
-}
-
-.load-more-button:hover {
-  background-position: right center;
-  color: #fff;
-  text-decoration: none;
 }
 </style>
