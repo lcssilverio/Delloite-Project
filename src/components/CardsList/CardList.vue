@@ -1,7 +1,6 @@
 <template>
   <div class="card-list">
-    <PostCard v-for="skin in skins" :key="skin.id" :image="skin.image" :title="skin.name"
-      :description="skin.description" />
+    <PostCard v-for="skin in skins" :key="skin.id" :item="skin" />
   </div>
 </template>
 
@@ -55,7 +54,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .card-list {
   display: grid;
   justify-content: center;
