@@ -1,19 +1,45 @@
 <template>
   <div class="card">
-    <img :src="image" alt="Card Image" class="card-image" />
+    <div class="card-header">
+      <img :src="item.image" alt="Card Image" class="card-image" />
+      <button v-if="isFavorite()" @click="addFavorite()" class="favorite-button">
+        Favoritar
+      </button>
+      <button v-else @click="removeFavorite()" class="unfavorite-button">Favorito</button>
+    </div>
     <div class="card-content">
-      <h2>{{ title }}</h2>
-      <p>{{ description }}</p>
+      <h2>{{ item.name }}</h2>
+      <p>{{ item.description }}</p>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   props: {
-    image: String,
-    title: String,
-    description: String
+    item: Object,
+  },
+
+  methods: {
+    isFavorite() {
+      const array = this.$store.state.favorites
+      const index = array.findIndex((obj) => obj.id === this.item.id)
+      if (index) {
+        return true
+      } else {
+        return false
+      }
+    },
+    addFavorite() {
+      const index = this.$store.state.favorites.findIndex((obj) => obj.id === this.item.id)
+      if (index) {
+        this.$store.commit('addFavorites', this.item)
+      }
+    },
+    removeFavorite() {
+      this.$store.commit('removeFavorites', this.item.id)
+    }
   }
 };
 </script>
@@ -32,6 +58,12 @@ export default {
   border: 2px solid white;
 }
 
+.card-header {
+  display: flex;
+  justify-content: end;
+  padding: 5px;
+}
+
 .card-image {
   width: 200px;
   height: 200px;
@@ -41,5 +73,23 @@ export default {
 
 .card-content {
   padding: 10px;
+}
+
+button {
+  height: 30px;
+  width: 65px;
+  border: 1px solid #a9a9a9;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.favorite-button {
+  border: 1px solid #000;
+
+}
+
+.unfavorite-button {
+  background-image: linear-gradient(to right, #F09819 0%, #EDDE5D 50%, #F09819 100%);
+  font-weight: bold
 }
 </style>

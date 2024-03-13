@@ -3,6 +3,7 @@
     <h2>{{ pageTitle }}</h2>
     <nav>
       <router-link to="/" class="nav-link">Home</router-link>
+      <router-link to="/favorites" class="nav-link">Favoritos</router-link>
       <router-link to="/about" class="nav-link">Sobre o jogo</router-link>
       <router-link to="/creator" class="nav-link">Sobre o criador</router-link>
     </nav>
@@ -32,7 +33,7 @@ export default {
 .nav-link {
   color: #fff;
   text-decoration: none;
-  margin-left: 10px;
+  margin-left: 15px;
 }
 
 .nav-link:hover {
@@ -51,10 +52,10 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #000;
+  padding: 10px;
   box-shadow: 0 0 5px #eee;
   background-image: linear-gradient(to right, #F09819 0%, #EDDE5D 50%, #F09819 100%);
   border: 1px solid #a9a9a9;
-  padding: 10px;
   border-radius: 8px;
   cursor: pointer;
 }
